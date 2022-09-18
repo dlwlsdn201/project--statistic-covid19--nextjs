@@ -37,6 +37,19 @@ import avatar1 from '../../assets/images/users/avatar-1.png';
 import avatar2 from '../../assets/images/users/avatar-2.png';
 import avatar3 from '../../assets/images/users/avatar-3.png';
 import avatar4 from '../../assets/images/users/avatar-4.png';
+import { shallowEqual, useSelector } from 'react-redux';
+import { calcRateOfDayToDay, getChartData } from './Handlers';
+import { TchangeRate } from '../../types/components/Dashboard';
+import {
+	Area,
+	CartesianGrid,
+	Line,
+	LineChart,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis
+} from 'recharts';
 
 // avatar style
 const avatarSX = {
@@ -76,7 +89,63 @@ const status = [
 const Dashboard = () => {
 	const [value, setValue] = useState('today');
 	const [slot, setSlot] = useState('week');
-	console.log('대시보드 렌더링');
+	const dashboardState = useSelector(
+		(state: any) => state.dashboard,
+		shallowEqual
+	);
+
+	const {
+		deaths,
+		severeSymptoms,
+		hospitalizations,
+		confirmations,
+		searchDate,
+		yesterday,
+		weekly
+	} = dashboardState;
+
+	const changeRate: TchangeRate = {
+		deaths: calcRateOfDayToDay(deaths?.count, yesterday?.deaths?.count),
+		severeSymptoms: calcRateOfDayToDay(
+			severeSymptoms?.count,
+			yesterday?.severeSymptoms?.count
+		),
+		hospitalizations: calcRateOfDayToDay(
+			hospitalizations?.count,
+			yesterday?.hospitalizations?.count
+		),
+		confirmations: calcRateOfDayToDay(
+			confirmations?.count,
+			yesterday?.confirmations?.count
+		)
+	};
+
+	const renderChartItems = () => {
+		const data = getChartData(weekly?.confirmations);
+
+		return (
+			<ResponsiveContainer height='100%'>
+				<LineChart data={data}>
+					<XAxis dataKey='datetime' label='날짜(일)' height={100} />
+					<YAxis dataKey='value' label='인원(명)' width={100} />
+					<CartesianGrid strokeDasharray='3 3' />
+					<Line
+						type='monotone'
+						dataKey='value'
+						stroke='rgba(3, 169, 244, 0.85)'
+						fill='rgba(3, 169, 244, 0.85)'
+					/>
+					<Tooltip
+						formatter={(value: number | string) => [`${value}명`, '인원']}
+						labelFormatter={(label, payload) =>
+							`${label.split('.')[0]}월 ${label.split('.')[1]}일`
+						}
+					/>
+				</LineChart>
+			</ResponsiveContainer>
+		);
+	};
+
 	return (
 		<Grid container rowSpacing={4.5} columnSpacing={2.75}>
 			{/* row 1 */}
@@ -85,38 +154,42 @@ const Dashboard = () => {
 			</Grid>
 			<Grid item xs={12} sm={6} md={4} lg={3}>
 				<AnalyticEcommerce
-					title='확진자 수'
-					count='200,000'
-					percentage={59.3}
-					extra='35,000'
+					title='신규 확진자 수'
+					count={confirmations?.count?.toLocaleString()}
+					percentage={changeRate?.confirmations}
+					extra={confirmations?.rate}
+					unit='%'
+					subtitle='신규 확진자 현황'
 				/>
 			</Grid>
 			<Grid item xs={12} sm={6} md={4} lg={3}>
 				<AnalyticEcommerce
 					title='사망자 수'
-					count='50'
-					percentage={10}
-					extra='8,900'
+					count={deaths?.count?.toLocaleString()}
+					percentage={changeRate?.deaths}
+					unit='%'
+					subtitle='사망자 현황'
+					extra={deaths?.rate}
 				/>
 			</Grid>
 			<Grid item xs={12} sm={6} md={4} lg={3}>
 				<AnalyticEcommerce
-					title='누적 의심 검사 수'
-					count='18,800'
-					percentage={27.4}
-					isLoss
-					color='warning'
-					extra='1,943'
+					title='재원 위중증 발생 수'
+					count={severeSymptoms?.count?.toLocaleString()}
+					percentage={changeRate?.severeSymptoms}
+					unit='%'
+					subtitle='재원 위중증 발생 현황'
+					extra={severeSymptoms?.rate}
 				/>
 			</Grid>
 			<Grid item xs={12} sm={6} md={4} lg={3}>
 				<AnalyticEcommerce
-					title='누적 확진률'
-					count='20%'
-					percentage={10}
-					isLoss
-					color='warning'
-					extra='$20,395'
+					title='일일 신규입원 수'
+					count={hospitalizations?.count?.toLocaleString()}
+					percentage={changeRate?.hospitalizations}
+					unit='%'
+					subtitle='신규 확진자 현황'
+					extra={hospitalizations?.rate}
 				/>
 			</Grid>
 			<Grid
@@ -133,13 +206,13 @@ const Dashboard = () => {
 					</Grid>
 					<Grid item>
 						<Stack direction='row' alignItems='center' spacing={0}>
-							<Button
+							{/* <Button
 								size='small'
 								onClick={() => setSlot('month')}
 								color={slot === 'month' ? 'primary' : 'secondary'}
 								variant={slot === 'month' ? 'outlined' : 'text'}>
 								Month
-							</Button>
+							</Button> */}
 							<Button
 								size='small'
 								onClick={() => setSlot('week')}
@@ -152,7 +225,8 @@ const Dashboard = () => {
 				</Grid>
 				<MainCard content={false} sx={{ mt: 1.5 }}>
 					<Box sx={{ pt: 1, pr: 2 }}>
-						<IncomeAreaChart slot={slot} />
+						<div style={{ padding: '40px 20px' }}>{renderChartItems()}</div>
+						{/* <IncomeAreaChart slot={slot} /> */}
 					</Box>
 				</MainCard>
 			</Grid>

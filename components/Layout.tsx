@@ -15,11 +15,11 @@ const Layout: FC<TProp> = ({ children }) => {
 	const drawerSidebar = useMemo(() => <Sidebar />, []);
 	return (
 		<>
-			{!matchDownMD && (
+			{/* {!matchDownMD && (
 				<MiniDrawerStyled variant='permanent' open={true}>
 					{drawerSidebar}
 				</MiniDrawerStyled>
-			)}
+			)} */}
 			<div>{children}</div>
 		</>
 	);

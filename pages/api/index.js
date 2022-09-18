@@ -1,16 +1,17 @@
 import axios from 'axios';
 import { API_TIMEOUT, API_URL } from '../../components/constants';
 
-export const READ_DOMESTIC_COVID_STATUS_TODAY = () =>
-	axios({
-		method: 'GET',
-		baseURL: API_URL,
-		timeout: API_TIMEOUT,
-		url: `/1790387/covid19CurrentStatusKorea/covid19CurrentStatusKoreaJason`,
-		params: {
-			serviceKey: decodeURIComponent(process.env.API_KEY)
-		}
-	});
+// 데이터 무결성 이슈로 인해 사용 안함
+// export const READ_DOMESTIC_COVID_STATUS_TODAY = () =>
+// 	axios({
+// 		method: 'GET',
+// 		baseURL: API_URL,
+// 		timeout: API_TIMEOUT,
+// 		url: `/1790387/covid19CurrentStatusKorea/covid19CurrentStatusKoreaJason`,
+// 		params: {
+// 			serviceKey: decodeURIComponent(process.env.API_KEY)
+// 		}
+// 	});
 
 // 주간 국내 신규 확진자 현황 데이터 조회
 export const READ_DOMESTIC_COVID_CONFIRMATIONS_OF_WEEKLY = () =>

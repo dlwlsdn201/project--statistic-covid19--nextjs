@@ -1,3 +1,3 @@
 export interface IPageProps {
-	payload: Array<any>;
+	[key: string]: Array<any>;
 }

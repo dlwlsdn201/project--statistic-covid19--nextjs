@@ -17,7 +17,9 @@ const AnalyticEcommerce = ({
 	count,
 	percentage,
 	isLoss,
-	extra
+	extra,
+	subtitle,
+	unit
 }) => (
 	<MainCard contentSX={{ p: 2.25 }}>
 		<Stack spacing={0.5}>
@@ -27,29 +29,28 @@ const AnalyticEcommerce = ({
 			<Grid container alignItems='center'>
 				<Grid item>
 					<Typography variant='h4' color='inherit'>
-						{count}
+						{count ?? '-'}
 					</Typography>
 				</Grid>
-				{percentage && (
+				{typeof percentage && percentage !== 'NaN' && (
 					<Grid item>
 						<Chip
 							variant='combined'
-							color={color}
+							color={Number(percentage) > 0 ? 'warning' : 'primary'}
 							icon={
 								<>
-									{!isLoss && (
+									{Number(percentage) > 0 ? (
 										<RiseOutlined
 											style={{ fontSize: '0.75rem', color: 'inherit' }}
 										/>
-									)}
-									{isLoss && (
+									) : (
 										<FallOutlined
 											style={{ fontSize: '0.75rem', color: 'inherit' }}
 										/>
 									)}
 								</>
 							}
-							label={`${percentage}%`}
+							label={`${percentage}% (전일 대비)`}
 							sx={{ ml: 1.25, pl: 1 }}
 							size='small'
 						/>
@@ -59,14 +60,13 @@ const AnalyticEcommerce = ({
 		</Stack>
 		<Box sx={{ pt: 2.25 }}>
 			<Typography variant='caption' color='textSecondary'>
-				You made an extra{' '}
+				인구 10만명당 {subtitle}{' '}
 				<Typography
 					component='span'
 					variant='caption'
-					sx={{ color: `${color || 'primary'}.main` }}>
-					{extra}
+					sx={{ color: `${'success'}.main` }}>
+					{`${extra ?? '-'} (${unit})`}
 				</Typography>{' '}
-				this year
 			</Typography>
 		</Box>
 	</MainCard>
