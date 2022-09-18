@@ -1,8 +1,10 @@
 // import type { NextPage } from 'next';
+import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Dashboard from '../components/Dashboard';
 import Seo from '../components/Seo';
+import { getBeforeDate, getToday } from '../lib/Date';
 import {
 	updateConfirmations,
 	updateDeaths,
@@ -11,15 +13,21 @@ import {
 	updateSevereSymptoms
 } from '../store/reducers/dashboard';
 import { IPageProps } from '../types/page';
-import { READ_DOMESTIC_COVID_STATUS } from './api';
+import {
+	READ_DOMESTIC_COVID_CONFIRMATIONS_OF_WEEKLY,
+	READ_DOMESTIC_COVID_DEATHS_OF_WEEKLY,
+	READ_DOMESTIC_COVID_HOSPITALIZATIONS_OF_WEEKLY,
+	READ_DOMESTIC_COVID_SEVERE_SYMPTOMS_OF_WEEKLY,
+	READ_DOMESTIC_COVID_STATUS_TODAY
+} from './api';
 
 const Home = (props: IPageProps): JSX.Element => {
 	const dispatch = useDispatch();
 	console.log('Home 렌더링');
 
 	const initData = () => {
-		const { payload } = props;
-		const responseData = payload[0];
+		const { covid_status_today } = props;
+		const responseData = covid_status_today[0]; // 국내 일일 확진자, 사망자, 중증 발생자, 신규 입원자 현황 데이터
 		let updateData;
 		if (responseData) {
 			const {
@@ -54,7 +62,6 @@ const Home = (props: IPageProps): JSX.Element => {
 					rate: rate_confirmations
 				}
 			};
-			console.log('여기');
 			dispatch(updateSearchDate(mmddhh));
 			dispatch(
 				updateSevereSymptoms({ severeSymptoms: updateData.severeSymptoms })
@@ -73,6 +80,17 @@ const Home = (props: IPageProps): JSX.Element => {
 
 	useEffect(() => {
 		initData();
+
+		async () => {
+			const APIDayStatus = await READ_COVID_STATUS_DAY({
+				pageNo: 1,
+				numOfRows: 100,
+				apiType: 'json',
+				statusDate: getToday('YYYYMMDD')
+			});
+
+			console.log('APIDayStatus:', APIDayStatus);
+		};
 	}, []);
 	return (
 		<>
@@ -87,19 +105,52 @@ export default Home;
 
 // SSR 적용
 export async function getServerSideProps() {
-	let API_DATA;
-	const api = await READ_DOMESTIC_COVID_STATUS(); // 일일 코로나 현황 조회 API 호출
-	if (api.status >= 200 && api.status < 300) {
-		API_DATA = api?.data?.response?.result;
-	}
-	try {
-	} catch (e) {
-		console.log('Error:', e);
-	}
+	let PAYLOAD_STATUS_TODAY;
+	let PAYLOAD_CONFIRMATIONS;
+	let PAYLOAD_DEATHS_WEEKLY;
+	let PAYLOAD_CONFIRMATIONS_WEEKLY;
+	let PAYLOAD_SEVERE_SYMPTOMS_WEEKLY;
+	let PAYLOAD_HOSPITALIZATIONS_WEEKLY;
+
+	await axios
+		.all([
+			READ_DOMESTIC_COVID_STATUS_TODAY(), // 일일 국내 코로나 현황 조회 API 호출
+			READ_DOMESTIC_COVID_CONFIRMATIONS_OF_WEEKLY(), // 주간 국내 코로나 신규 확진자 조회 API 호출
+			READ_DOMESTIC_COVID_DEATHS_OF_WEEKLY(), // 주간 국내 코로나 사망자 조회 API 호출
+			READ_DOMESTIC_COVID_SEVERE_SYMPTOMS_OF_WEEKLY(), // 주간 국내 코로나 위중증자 조회 API 호출
+			READ_DOMESTIC_COVID_HOSPITALIZATIONS_OF_WEEKLY() // 주간 국내 코로나 신규 입원자 조회 API 호출
+		])
+		.then(
+			axios.spread(
+				(
+					resStatusToday,
+					resDeaths,
+					resConfirmations,
+					resSevereSymptons,
+					resHospitalizations
+				) => {
+					PAYLOAD_STATUS_TODAY = resStatusToday?.data?.response?.result;
+					// PAYLOAD_CONFIRMATIONS =
+					//   APIconfirmationsWeekly?.data?.response?.result;
+					PAYLOAD_DEATHS_WEEKLY = resDeaths?.data?.response?.result;
+					PAYLOAD_CONFIRMATIONS_WEEKLY =
+						resConfirmations?.data?.response?.result;
+					PAYLOAD_SEVERE_SYMPTOMS_WEEKLY =
+						resSevereSymptons?.data?.response?.result;
+					PAYLOAD_HOSPITALIZATIONS_WEEKLY =
+						resHospitalizations?.data?.response?.result;
+				}
+			)
+		)
+		.catch((reason) => console.log('Occured Error =>', reason));
 
 	return {
 		props: {
-			payload: API_DATA
+			covid_status_today: PAYLOAD_STATUS_TODAY ?? [],
+			covid_deaths_weekly: PAYLOAD_DEATHS_WEEKLY ?? [],
+			covid_confirmations_weekly: PAYLOAD_CONFIRMATIONS_WEEKLY ?? [],
+			covid_severe_symptoms_weekly: PAYLOAD_SEVERE_SYMPTOMS_WEEKLY ?? [],
+			covid_hospitalizations_weekly: PAYLOAD_HOSPITALIZATIONS_WEEKLY ?? []
 		}
 	};
 }
