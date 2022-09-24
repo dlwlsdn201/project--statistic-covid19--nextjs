@@ -1,34 +1,26 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 작업중 
+---
+## 환경 
+- Next.JS 
+- react-redux
+- scss
+- Typesript
+- recharts
 
-## Getting Started
+## 작업 내용
+>### 디자인
+- 대시보드 페이지
+- 카테고리별 상세 조회 페이지
+- 환경설정 페이지
 
-First, run the development server:
+> ### UI
+- 주간 확진자 수 현황 차트 구현 (완료) -- 22.09.18
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+>### 데이터
+- 국내 코로나 발생현황 open API 연동(from.공공데이터포털) (완료) 
+- 주간 통계 현황 데이터 조회 API 4개 연동 (완료) -- 22.09.18
+- redux store 구조 설계 및 데이터 업데이트 
+  - 대시보드 (완료) -- 22.09.17
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 이슈 내용
+- 주간 확진자 현황 recharts 컴포넌트 렌더링이 안되는 이슈 발생 (해결 중_22.09.17~)
