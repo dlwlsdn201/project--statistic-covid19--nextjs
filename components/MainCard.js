@@ -122,8 +122,7 @@ MainCard.propTypes = {
 	sx: PropTypes.object,
 	title: PropTypes.string,
 	codeHighlight: PropTypes.bool,
-	content: PropTypes.bool,
-	children: PropTypes.node
+	content: PropTypes.bool
 };
 
 export default MainCard;
