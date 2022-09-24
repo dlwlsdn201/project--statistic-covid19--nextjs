@@ -1,9 +1,15 @@
 // import type { NextPage } from 'next';
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Dashboard from '../components/Dashboard';
 import Seo from '../components/Seo';
+import {
+	TEST_PAYLOAD_CONFIRMATIONS_WEEKLY,
+	TEST_PAYLOAD_DEATHS_WEEKLY,
+	TEST_PAYLOAD_HOSPITALIZATIONS_WEEKLY,
+	TEST_PAYLOAD_SEVERE_SYMPTOMS_WEEKLY
+} from '../Test/Dashboard';
 import {
 	updateConfirmations,
 	updateDeaths,
@@ -25,7 +31,7 @@ import {
 const Home = (props: IPageProps): JSX.Element => {
 	const dispatch = useDispatch();
 
-	const initData = () => {
+	const initData = useCallback(() => {
 		const {
 			// covid_status_today,
 			covid_deaths_weekly,
@@ -112,11 +118,11 @@ const Home = (props: IPageProps): JSX.Element => {
 				})
 			);
 		}
-	};
+	}, [dispatch, props]);
 
 	useEffect(() => {
 		initData();
-	}, []);
+	}, [initData]);
 
 	return (
 		<>
@@ -137,8 +143,8 @@ export async function getServerSideProps() {
 	let PAYLOAD_HOSPITALIZATIONS_WEEKLY;
 	await axios
 		.all([
-			READ_DOMESTIC_COVID_CONFIRMATIONS_OF_WEEKLY(), // 주간 국내 코로나 신규 확진자 조회 API 호출
 			READ_DOMESTIC_COVID_DEATHS_OF_WEEKLY(), // 주간 국내 코로나 사망자 조회 API 호출
+			READ_DOMESTIC_COVID_CONFIRMATIONS_OF_WEEKLY(), // 주간 국내 코로나 신규 확진자 조회 API 호출
 			READ_DOMESTIC_COVID_SEVERE_SYMPTOMS_OF_WEEKLY(), // 주간 국내 코로나 위중증자 조회 API 호출
 			READ_DOMESTIC_COVID_HOSPITALIZATIONS_OF_WEEKLY() // 주간 국내 코로나 신규 입원자 조회 API 호출
 		])
@@ -150,11 +156,16 @@ export async function getServerSideProps() {
 					resSevereSymptons,
 					resHospitalizations
 				) => {
+					// 공공데이터포털 REST API 에 에러 이슈가 있음 _ 09.24 ~ ing (해결될 떄까지 테스트 데이터 사용)
 					if (
-						resDeaths &&
-						resConfirmations &&
-						resSevereSymptons &&
-						resHospitalizations
+						resDeaths.status === 200 &&
+						resDeaths.data?.response?.result.length > 0 &&
+						resConfirmations.status === 200 &&
+						resConfirmations.data?.response?.result.length > 0 &&
+						resSevereSymptons.status === 200 &&
+						resSevereSymptons.data?.response?.result.length > 0 &&
+						resHospitalizations.status === 200 &&
+						resHospitalizations.data?.response?.result.length > 0
 					) {
 						PAYLOAD_DEATHS_WEEKLY = resDeaths?.data?.response?.result;
 						PAYLOAD_CONFIRMATIONS_WEEKLY =
@@ -171,10 +182,13 @@ export async function getServerSideProps() {
 
 	return {
 		props: {
-			covid_deaths_weekly: PAYLOAD_DEATHS_WEEKLY ?? [],
-			covid_confirmations_weekly: PAYLOAD_CONFIRMATIONS_WEEKLY ?? [],
-			covid_severe_symptoms_weekly: PAYLOAD_SEVERE_SYMPTOMS_WEEKLY ?? [],
-			covid_hospitalizations_weekly: PAYLOAD_HOSPITALIZATIONS_WEEKLY ?? []
+			covid_deaths_weekly: PAYLOAD_DEATHS_WEEKLY ?? TEST_PAYLOAD_DEATHS_WEEKLY,
+			covid_confirmations_weekly:
+				PAYLOAD_CONFIRMATIONS_WEEKLY ?? TEST_PAYLOAD_CONFIRMATIONS_WEEKLY,
+			covid_severe_symptoms_weekly:
+				PAYLOAD_SEVERE_SYMPTOMS_WEEKLY ?? TEST_PAYLOAD_SEVERE_SYMPTOMS_WEEKLY,
+			covid_hospitalizations_weekly:
+				PAYLOAD_HOSPITALIZATIONS_WEEKLY ?? TEST_PAYLOAD_HOSPITALIZATIONS_WEEKLY
 		}
 	};
 }

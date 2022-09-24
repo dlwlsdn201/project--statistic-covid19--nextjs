@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 // material-ui
 import {
@@ -19,11 +19,6 @@ import {
 } from '@mui/material';
 
 // project import
-import OrdersTable from './OrdersTable';
-import IncomeAreaChart from './IncomeAreaChart';
-import MonthlyBarChart from './MonthlyBarChart';
-import ReportAreaChart from './ReportAreaChart';
-import SalesColumnChart from './SalesColumnChart';
 import MainCard from '../MainCard';
 import AnalyticEcommerce from '../cards/statistics/AnalyticEcommerce';
 
@@ -40,16 +35,11 @@ import avatar4 from '../../assets/images/users/avatar-4.png';
 import { shallowEqual, useSelector } from 'react-redux';
 import { calcRateOfDayToDay, getChartData } from './Handlers';
 import { TchangeRate } from '../../types/components/Dashboard';
-import {
-	Area,
-	CartesianGrid,
-	Line,
-	LineChart,
-	ResponsiveContainer,
-	Tooltip,
-	XAxis,
-	YAxis
-} from 'recharts';
+import { ResponsiveContainer } from 'recharts';
+import ConfirmationOfWeeklyCharts from './ConfirmationOfWeeklyCharts';
+import DeathOfWeeklyCharts from './DeathOfWeeklyCharts';
+
+import { TChartData } from '../../types/components/Dashboard';
 
 // avatar style
 const avatarSX = {
@@ -89,10 +79,7 @@ const status = [
 const Dashboard = () => {
 	const [value, setValue] = useState('today');
 	const [slot, setSlot] = useState('week');
-	const dashboardState = useSelector(
-		(state: any) => state.dashboard,
-		shallowEqual
-	);
+	const dashboardState = useSelector((state) => state.dashboard, shallowEqual);
 
 	const {
 		deaths,
@@ -104,7 +91,19 @@ const Dashboard = () => {
 		weekly
 	} = dashboardState;
 
-	const changeRate: TchangeRate = {
+	// ---- functions -----
+	const getTotalValueOfWeekly = (chartData) => {
+		let result = 0;
+		if (chartData && chartData.length > 0) {
+			result = chartData.reduce((acc, curObj) => {
+				return curObj?.value ? acc + curObj.value : acc;
+			}, result);
+		}
+		return result;
+	};
+
+	// ----- Data objs -----
+	const changeRate = {
 		deaths: calcRateOfDayToDay(deaths?.count, yesterday?.deaths?.count),
 		severeSymptoms: calcRateOfDayToDay(
 			severeSymptoms?.count,
@@ -120,34 +119,14 @@ const Dashboard = () => {
 		)
 	};
 
-	const renderChartItems = () => {
-		const data = getChartData(weekly?.confirmations);
-
-		return (
-			<ResponsiveContainer height='100%'>
-				<LineChart data={data}>
-					<XAxis dataKey='datetime' label='날짜(일)' height={100} />
-					<YAxis dataKey='value' label='인원(명)' width={100} />
-					<CartesianGrid strokeDasharray='3 3' />
-					<Line
-						type='monotone'
-						dataKey='value'
-						stroke='rgba(3, 169, 244, 0.85)'
-						fill='rgba(3, 169, 244, 0.85)'
-					/>
-					<Tooltip
-						formatter={(value: number | string) => [`${value}명`, '인원']}
-						labelFormatter={(label, payload) =>
-							`${label.split('.')[0]}월 ${label.split('.')[1]}일`
-						}
-					/>
-				</LineChart>
-			</ResponsiveContainer>
-		);
+	const chartData = {
+		deaths: getChartData(weekly?.deaths),
+		confirmations: getChartData(weekly?.confirmations)
 	};
+	// -----------------
 
 	return (
-		<Grid container rowSpacing={4.5} columnSpacing={2.75}>
+		<Grid container rowSpacing={5} columnSpacing={2.75}>
 			{/* row 1 */}
 			<Grid item xs={12} sx={{ mb: -2.25 }}>
 				<Typography variant='h5'>Dashboard</Typography>
@@ -223,10 +202,21 @@ const Dashboard = () => {
 						</Stack>
 					</Grid>
 				</Grid>
-				<MainCard content={false} sx={{ mt: 1.5 }}>
+				<MainCard sx={{ mt: 1.5 }}>
 					<Box sx={{ pt: 1, pr: 2 }}>
-						<div style={{ padding: '40px 20px' }}>{renderChartItems()}</div>
-						{/* <IncomeAreaChart slot={slot} /> */}
+						<Stack spacing={1}>
+							<Typography variant='h6' color='textSecondary'>
+								주간 총 확진자 수
+							</Typography>
+							<Typography variant='h5'>
+								{`${getTotalValueOfWeekly(chartData?.confirmations)} 명`}
+							</Typography>
+						</Stack>
+						<div style={{ padding: '40px 0px 0px' }}>
+							<ResponsiveContainer minWidth='100%' minHeight={300}>
+								{ConfirmationOfWeeklyCharts(chartData?.deaths)}
+							</ResponsiveContainer>
+						</div>
 					</Box>
 				</MainCard>
 			</Grid>
@@ -237,16 +227,22 @@ const Dashboard = () => {
 					</Grid>
 					<Grid item />
 				</Grid>
-				<MainCard sx={{ mt: 2 }} content={false}>
-					<Box sx={{ p: 3, pb: 0 }}>
-						<Stack spacing={2}>
+				<MainCard sx={{ mt: 1.5 }}>
+					<Box sx={{ pt: 1, pr: 2 }}>
+						<Stack spacing={1}>
 							<Typography variant='h6' color='textSecondary'>
-								This Week Statistics
+								주간 총 사망자 수
 							</Typography>
-							<Typography variant='h3'>$7,650</Typography>
+							<Typography variant='h5'>
+								{`${getTotalValueOfWeekly(chartData?.deaths)} 명`}
+							</Typography>
 						</Stack>
 					</Box>
-					<MonthlyBarChart />
+					<div style={{ padding: '40px 0px 0px' }}>
+						<ResponsiveContainer minWidth='100%' minHeight={300}>
+							{DeathOfWeeklyCharts(chartData?.deaths)}
+						</ResponsiveContainer>
+					</div>
 				</MainCard>
 			</Grid>
 

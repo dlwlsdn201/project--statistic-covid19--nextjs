@@ -24,8 +24,6 @@ export const getChartData = (
 	dataObj: TWeeklyDataObj
 	// searchDate: string | number
 ) => {
-	console.log('params:', dataObj);
-
 	const sortDataList = (prevList: Array<string>) =>
 		prevList.sort(
 			(a: string, b: string) => Number(a.slice(-1)) - Number(b.slice(-1))
