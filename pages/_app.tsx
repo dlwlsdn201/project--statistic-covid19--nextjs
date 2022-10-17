@@ -6,13 +6,13 @@ import Layout from '../components/Layout';
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
-		<>
+		<div className='root-container'>
 			<Provider store={store}>
 				<Layout>
 					<Component {...pageProps} />
 				</Layout>
 			</Provider>
-		</>
+		</div>
 	);
 }
 

@@ -22,6 +22,33 @@ a {
   }
   body {
     color: white;
-    background: black;
+    background: #607D8B;
   }
+}
+
+.inner-container {
+  padding: 36px 24px;
+}
+
+.header-container {
+  background: #455A64;
+  padding: 12px 24px;
+}
+
+.header-title {
+  font-size: 1.2em;
+  margin-right: 8px;
+}
+
+.lookup-time {
+  font-size: 0.8em;
+}
+
+/* Grid */
+.grid-container {
+  /* border: 1px solid red; */
+  background: #78655e;
+  border-radius: 12px 12px 12px 12px;
+    padding: 36px 24px;
+    margin-bottom: 2%;
 }
