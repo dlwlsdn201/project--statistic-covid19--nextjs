@@ -5,6 +5,7 @@ import { useTheme } from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
 import Header from './Header';
 import MiniDrawerStyled from './MiniDrawerStyled';
+import Footer from './Footer';
 type TProp = {
 	children: JSX.Element;
 };
@@ -25,6 +26,7 @@ const Layout: FC<TProp> = ({ children }) => {
 			)} */}
 				<div>{children}</div>
 			</div>
+			<Footer />
 		</>
 	);
 };
