@@ -224,7 +224,9 @@ const Dashboard = () => {
 										주간 총 확진자 수
 									</Typography>
 									<Typography variant='h5'>
-										{`${getTotalValueOfWeekly(chartData?.confirmations)} 명`}
+										{`${getTotalValueOfWeekly(
+											chartData?.confirmations
+										).toLocaleString()} 명`}
 									</Typography>
 								</Stack>
 								<div style={{ padding: '40px 0px 0px' }}>
