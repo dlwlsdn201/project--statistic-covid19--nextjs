@@ -18,4 +18,5 @@ export interface IinitialState {
 	confirmations: stateObj;
 	yesterday: TCategory;
 	weekly: TCategory;
+	loading: boolean;
 }

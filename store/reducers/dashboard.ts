@@ -67,7 +67,8 @@ const initialState: IinitialState = {
 			count: undefined,
 			rate: undefined
 		}
-	}
+	},
+	loading: false
 };
 
 // ==============================|| SLICE - Dashboard ||============================== //
@@ -150,6 +151,16 @@ const dashboard = createSlice({
 				}
 			});
 			return nextState;
+		},
+
+		// APi data 로딩 상태
+		loadingFetchData(state, action) {
+			const nextState: IinitialState = update(state, {
+				loading: {
+					$set: action.payload
+				}
+			});
+			return nextState;
 		}
 	}
 });
@@ -163,5 +174,6 @@ export const {
 	updateConfirmations,
 	updateSearchDate,
 	updateYesterdayData,
-	updateWeeklyData
+	updateWeeklyData,
+	loadingFetchData
 } = dashboard.actions;

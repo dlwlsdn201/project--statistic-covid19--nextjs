@@ -80,7 +80,6 @@ const Dashboard = () => {
 	const [value, setValue] = useState('today');
 	const [slot, setSlot] = useState('week');
 	const dashboardState = useSelector((state) => state.dashboard, shallowEqual);
-
 	const {
 		deaths,
 		severeSymptoms,

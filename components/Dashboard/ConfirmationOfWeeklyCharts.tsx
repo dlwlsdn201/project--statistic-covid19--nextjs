@@ -19,7 +19,7 @@ const ConfirmationOfWeeklyCharts = (chartData: TChartData) => (
 		<Tooltip
 			formatter={(value: any) => [`${value}명`, '인원']}
 			labelFormatter={(label: string) =>
-				`${label.split('.')[0]}월 ${label.split('.')[1]}일`
+				label ? `${label.split('.')[0]}월 ${label.split('.')[1]}일` : '-'
 			}
 		/>
 		<CartesianGrid strokeDasharray='3 3' />

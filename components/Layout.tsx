@@ -13,7 +13,6 @@ type TProp = {
 const Layout: FC<TProp> = ({ children }) => {
 	const theme = useTheme();
 	const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
-
 	const drawerSidebar = useMemo(() => <Sidebar />, []);
 	return (
 		<>
