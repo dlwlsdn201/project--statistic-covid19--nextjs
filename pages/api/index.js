@@ -21,7 +21,11 @@ export const READ_DOMESTIC_COVID_CONFIRMATIONS_OF_WEEKLY = () =>
 		timeout: API_TIMEOUT,
 		url: `/1790387/covid19CurrentStatusConfirmations/covid19CurrentStatusConfirmationsJson`,
 		params: {
-			serviceKey: decodeURIComponent(process.env.API_KEY)
+			serviceKey:
+				// decodeURIComponent(process.env.API_KEY) ??
+				decodeURIComponent(
+					'KOmVWhRTLJbltSjetYWBfguGDSkRw3U2mROGLgYPMO896f1xSChfUfTIo%2BLAI1uW1uRA8AiGUZE%2Fo4Os3uXBbw%3D%3D'
+				)
 		}
 	});
 
@@ -33,7 +37,11 @@ export const READ_DOMESTIC_COVID_DEATHS_OF_WEEKLY = () =>
 		timeout: API_TIMEOUT,
 		url: `/1790387/covid19CurrentStatusDeaths/covid19CurrentStatusDeathsJson`,
 		params: {
-			serviceKey: decodeURIComponent(process.env.API_KEY)
+			serviceKey:
+				// decodeURIComponent(process.env.API_KEY) ??
+				decodeURIComponent(
+					'KOmVWhRTLJbltSjetYWBfguGDSkRw3U2mROGLgYPMO896f1xSChfUfTIo%2BLAI1uW1uRA8AiGUZE%2Fo4Os3uXBbw%3D%3D'
+				)
 		}
 	});
 
@@ -45,7 +53,11 @@ export const READ_DOMESTIC_COVID_SEVERE_SYMPTOMS_OF_WEEKLY = () =>
 		timeout: API_TIMEOUT,
 		url: `/1790387/covid19CurrentStatusSevereSymptoms/covid19CurrentStatusSevereSymptomsJson`,
 		params: {
-			serviceKey: decodeURIComponent(process.env.API_KEY)
+			serviceKey:
+				// decodeURIComponent(process.env.API_KEY) ??
+				decodeURIComponent(
+					'KOmVWhRTLJbltSjetYWBfguGDSkRw3U2mROGLgYPMO896f1xSChfUfTIo%2BLAI1uW1uRA8AiGUZE%2Fo4Os3uXBbw%3D%3D'
+				)
 		}
 	});
 
@@ -57,7 +69,11 @@ export const READ_DOMESTIC_COVID_HOSPITALIZATIONS_OF_WEEKLY = () =>
 		timeout: API_TIMEOUT,
 		url: `/1790387/covid19CurrentStatusHospitalizations/covid19CurrentStatusHospitalizationsJson`,
 		params: {
-			serviceKey: decodeURIComponent(process.env.API_KEY)
+			serviceKey:
+				// decodeURIComponent(process.env.API_KEY) ??
+				decodeURIComponent(
+					'KOmVWhRTLJbltSjetYWBfguGDSkRw3U2mROGLgYPMO896f1xSChfUfTIo%2BLAI1uW1uRA8AiGUZE%2Fo4Os3uXBbw%3D%3D'
+				)
 		}
 	});
 

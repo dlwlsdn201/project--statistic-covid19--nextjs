@@ -33,6 +33,8 @@ a {
 .header-container {
   background: #455A64;
   padding: 12px 24px;
+  display: flex;
+  align-items: center;
 }
 
 .header-title {
@@ -42,6 +44,7 @@ a {
 
 .lookup-time {
   font-size: 0.8em;
+  margin-right: 8px;
 }
 
 /* Footer */
