@@ -19,7 +19,7 @@ const DeathOfWeeklyCharts = (chartData: TChartData) => (
 		<Tooltip
 			formatter={(value: any) => [`${value}명`, '인원']}
 			labelFormatter={(label: string) =>
-				`${label.split('.')[0]}월 ${label.split('.')[1]}일`
+				label ? `${label.split('.')[0]}월 ${label.split('.')[1]}일` : ''
 			}
 			cursorStyle={{ background: 'yellow' }}
 			cursor={{ fill: '#a8a8a8', opacity: 0.2 }}

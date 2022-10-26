@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Refresh from '../Modules/Refresh';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import dashboard, {
@@ -15,7 +15,7 @@ import dashboard, {
 import { getRefreshData } from '../Dashboard/Handlers';
 
 const Header = () => {
-	const nowTime = dayjs().format('YYYY-MM-DD HH시mm분ss초');
+	const [searchTime, setSearchTime] = useState<string | null>(null);
 	const dispatch = useDispatch();
 	const dashboardState = useSelector(
 		(state: any) => state.dashboard,
@@ -138,17 +138,23 @@ const Header = () => {
 		}
 	};
 
-	const updateData = () => {
+	// 데이터 갱신
+	const updateData = async () => {
 		dispatch(loadingFetchData(true));
-		getRefreshData().then((newData) => dispatchRefreshData(newData));
+		await getRefreshData().then((newData) => dispatchRefreshData(newData));
 		dispatch(loadingFetchData(false));
 	};
 
 	const { loading } = dashboardState;
+	useEffect(() => {
+		const nowTime = dayjs().format('YYYY-MM-DD HH시mm분ss초');
+		setSearchTime(nowTime);
+	}, [loading]);
+
 	return (
 		<div className='header-container'>
 			<strong className='header-title'>국내 COVID19 현황 대시보드</strong>
-			<span className='lookup-time'>{`(${nowTime} 기준 조회)`}</span>
+			<span className='lookup-time'>{`(${searchTime} 기준 조회)`}</span>
 			<Refresh spin={loading} size={'1.2em'} onClick={() => updateData()} />
 		</div>
 	);

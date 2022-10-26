@@ -5,12 +5,6 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import Dashboard from '../components/Dashboard';
 import Seo from '../components/Seo';
 import {
-	TEST_PAYLOAD_CONFIRMATIONS_WEEKLY,
-	TEST_PAYLOAD_DEATHS_WEEKLY,
-	TEST_PAYLOAD_HOSPITALIZATIONS_WEEKLY,
-	TEST_PAYLOAD_SEVERE_SYMPTOMS_WEEKLY
-} from '../Test/Dashboard';
-import {
 	updateConfirmations,
 	updateDeaths,
 	updateHospitalizations,
@@ -28,6 +22,7 @@ import {
 	READ_DOMESTIC_COVID_SEVERE_SYMPTOMS_OF_WEEKLY
 	// READ_DOMESTIC_COVID_STATUS_TODAY
 } from './api';
+import { Spin } from 'antd';
 
 const Home = (props: IPageProps): JSX.Element => {
 	const dispatch = useDispatch();
@@ -151,7 +146,6 @@ const Home = (props: IPageProps): JSX.Element => {
 		console.log('useEffect');
 		initData(props);
 	}, [initData, props]);
-
 	return (
 		<>
 			<Seo title='대시보드' />
