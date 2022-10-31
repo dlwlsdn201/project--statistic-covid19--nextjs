@@ -161,8 +161,8 @@ const Dashboard = () => {
 					{/* row 2 */}
 					<Grid item xs={12} md={7} lg={8}>
 						<Grid container alignItems='center' justifyContent='space-between'>
-							<Grid item>
-								<Typography variant='h5'>주간 확진자 현황</Typography>
+							<Grid item sx={{ mb: 1.25 }}>
+								<Typography variant='h5'>주간 현황 차트</Typography>
 							</Grid>
 							<Grid item>
 								<Stack direction='row' alignItems='center' spacing={0}>
@@ -211,8 +211,10 @@ const Dashboard = () => {
 					</Grid>
 					<Grid item xs={12} md={5} lg={4}>
 						<Grid container alignItems='center' justifyContent='space-between'>
-							<Grid item>
-								<Typography variant='h5'>주간 사망자 현황</Typography>
+							<Grid item sx={{ mb: 1.25 }}>
+								<Typography variant='h5' style={{ visibility: 'hidden' }}>
+									주간 사망자 현황
+								</Typography>
 							</Grid>
 							<Grid item />
 						</Grid>
