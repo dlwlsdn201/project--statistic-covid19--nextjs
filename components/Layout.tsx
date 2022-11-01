@@ -16,7 +16,10 @@ const Layout: FC<TProp> = ({ children }) => {
 	const theme = useTheme();
 	const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
 	const drawerSidebar = useMemo(() => <Sidebar />, []);
-	const dashboardState = useSelector((state) => state.dashboard, shallowEqual);
+	const dashboardState = useSelector(
+		(state: any) => state.dashboard,
+		shallowEqual
+	);
 	return (
 		<>
 			<Header />
