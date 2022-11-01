@@ -1,10 +1,14 @@
 /** @type {import('next').NextConfig} */
 
 const API_KEY = process.env.API_KEY;
+const repository = 'project--statistic-covid19--nextjs/';
+const debug = process.env.NODE_ENV !== 'production';
 
 const nextConfig = {
 	reactStrictMode: true,
 	swcMinify: true,
+	assetPrefix: `/${repository}`,
+	trailingSlash: true,
 
 	async rewrites() {
 		return [

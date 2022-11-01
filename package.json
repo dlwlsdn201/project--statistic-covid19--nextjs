@@ -2,11 +2,13 @@
   "name": "project--statistic-covid19--nextjs",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://dlwlsdn201.github.io/project--statistic-covid19--nextjs/",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "next build && next export && touch out/.nojekyll && git add -f out/ && git commit -m 'deploy to gh-pages' && git subtree push --prefix out origin gh-pages"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
@@ -23,7 +25,7 @@
     "axios": "^0.27.2",
     "dayjs": "^1.11.5",
     "immutability-helper": "^3.1.1",
-    "next": "12.2.5",
+    "next": "^13.0.1",
     "react": "18.2.0",
     "react-apexcharts": "^1.4.0",
     "react-copy-to-clipboard": "^5.1.0",
