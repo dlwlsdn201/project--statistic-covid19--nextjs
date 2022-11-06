@@ -7,6 +7,15 @@ const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin'
 
 const nextConfig = {
 	plugins: [new StaticSiteGeneratorPlugin({ crawl: true })],
+	exportPathMap: async function (
+		defaultPathMap,
+		{ dev, dir, outDir, distDir, buildId }
+	) {
+		return {
+			'/': { page: '/' }
+		};
+	},
+	presets: ['@babel/preset-env', '@babel/preset-react'],
 	reactStrictMode: true,
 	swcMinify: true,
 	assetPrefix:
