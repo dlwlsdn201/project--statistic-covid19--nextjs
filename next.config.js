@@ -3,13 +3,17 @@
 const API_KEY = process.env.API_KEY;
 const repository = 'project--statistic-covid19--nextjs/';
 const debug = process.env.NODE_ENV !== 'production';
+const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
 
 const nextConfig = {
+	plugins: [new StaticSiteGeneratorPlugin({ crawl: true })],
 	reactStrictMode: true,
 	swcMinify: true,
-	assetPrefix: `/${repository}`,
+	assetPrefix:
+		process.env.NODE_ENV === 'production'
+			? `https://dlwlsdn201.github.io/${repository}`
+			: '',
 	trailingSlash: true,
-
 	async rewrites() {
 		return [
 			{
