@@ -14,7 +14,6 @@ import {
 	updateYesterdayData
 } from '../store/reducers/dashboard';
 import { IPageProps } from '../types/page';
-import dashboard from '../store/reducers/dashboard';
 import {
 	READ_DOMESTIC_COVID_CONFIRMATIONS_OF_WEEKLY,
 	READ_DOMESTIC_COVID_DEATHS_OF_WEEKLY,
@@ -22,7 +21,6 @@ import {
 	READ_DOMESTIC_COVID_SEVERE_SYMPTOMS_OF_WEEKLY
 	// READ_DOMESTIC_COVID_STATUS_TODAY
 } from './api';
-import { Spin } from 'antd';
 
 const Home = (props: IPageProps): JSX.Element => {
 	const dispatch = useDispatch();
