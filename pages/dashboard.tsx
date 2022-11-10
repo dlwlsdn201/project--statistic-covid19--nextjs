@@ -1,6 +1,6 @@
 // import type { NextPage } from 'next';
 import axios from 'axios';
-import { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import Dashboard from '../components/Dashboard';
 import Seo from '../components/Seo';

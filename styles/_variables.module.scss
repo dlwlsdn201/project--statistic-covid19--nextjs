@@ -1,0 +1,20 @@
+// 모든 scss 파일에서 공통적으로 사용할 변수
+$--palette-deaths: #ff1c1c;
+$--palette-confirmations: rgba(3, 169, 244, 0.85);
+$--palette-severeSymtoms: #ff9e37ff;
+$--palette-hospitalization: #f486f6;
+$--palette-primary: #876445;
+$--palette-secondary: #ca965c;
+$--palette-third: #eec373;
+$--palette-forth: #f4dfba;
+
+:export {
+	--palette-deaths: $--palette-deaths;
+	--palette-confirmations: $--palette-confirmations;
+	--palette-severeSymtoms: $--palette-severeSymtoms;
+	--palette-hospitalization: $--palette-hospitalization;
+	--palette-primary: $--palette-primary;
+	--palette-secondary: $--palette-secondary;
+	--palette-third: $--palette-third;
+	--palette-forth: $--palette-forth;
+}

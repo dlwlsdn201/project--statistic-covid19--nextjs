@@ -8,6 +8,7 @@ import MiniDrawerStyled from './MiniDrawerStyled';
 import Footer from './Footer';
 import { Spin } from 'antd';
 import { useSelector, shallowEqual } from 'react-redux';
+import Head from 'next/head';
 type TProp = {
 	children: JSX.Element;
 };
@@ -22,6 +23,13 @@ const Layout: FC<TProp> = ({ children }) => {
 	);
 	return (
 		<>
+			<Head>
+				{/* 페이지 제목/아이콘 */}
+				<meta
+					name='viewport'
+					content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
+				/>
+			</Head>
 			<Header />
 			<Spin
 				spinning={dashboardState.loading}

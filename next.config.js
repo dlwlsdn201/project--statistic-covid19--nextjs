@@ -3,20 +3,31 @@
 const API_KEY = process.env.API_KEY;
 const repository = 'project--statistic-covid19--nextjs';
 const debug = process.env.NODE_ENV !== 'production';
-const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
-
+const path = require('path');
+const glob = require('glob');
 const nextConfig = {
-	plugins: [new StaticSiteGeneratorPlugin({ crawl: true })],
+	trailingSlash: true, // It is possible to configure Next.js to export pages as index.html files and require trailing slashes, /about becomes /about/index.html and is routable via /about/. This was the default behavior prior to Next.js 9.
 	exportPathMap: async function (
 		defaultPathMap,
 		{ dev, dir, outDir, distDir, buildId }
 	) {
 		return {
-			'/': { page: '/' }
+			'/': { page: '/dashboard' },
+			'/dashboard': { page: '/dashboard' },
+			'/dashboard/': { page: '/dashboard' }
 		};
 	},
-	presets: ['next/babel', '@babel/preset-env', '@babel/preset-react'],
+	// withLess: () =>
+	// 	withLess({
+	// 		lessLoaderOptions: {
+	// 			javascriptEnabled: true
+	// 		}
+	// 	}),
 	reactStrictMode: true,
+	sassOptions: {
+		includePaths: [path.join(__dirname, 'styles')] // sass
+		// prependData: `@import "styles/_variables.scss;`
+	},
 	swcMinify: true,
 	assetPrefix:
 		process.env.NODE_ENV === 'production'
@@ -28,6 +39,15 @@ const nextConfig = {
 			{
 				source: process.env.SOURCE_PATH,
 				destination: `${process.env.DESTINATION_URL}?serviceKey=${API_KEY}`
+			}
+		];
+	},
+	async redirects() {
+		return [
+			{
+				source: '/',
+				destination: '/dashboard/',
+				permanent: true
 			}
 		];
 	}
