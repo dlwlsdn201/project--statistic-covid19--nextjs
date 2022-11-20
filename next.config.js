@@ -2,9 +2,7 @@
 
 const API_KEY = process.env.API_KEY;
 const repository = 'project--statistic-covid19--nextjs';
-const debug = process.env.NODE_ENV !== 'production';
 const path = require('path');
-const glob = require('glob');
 const nextConfig = {
 	trailingSlash: true, // It is possible to configure Next.js to export pages as index.html files and require trailing slashes, /about becomes /about/index.html and is routable via /about/. This was the default behavior prior to Next.js 9.
 	exportPathMap: async function (
@@ -13,16 +11,18 @@ const nextConfig = {
 	) {
 		return {
 			'/': { page: '/dashboard' },
-			'/dashboard': { page: '/dashboard' },
-			'/dashboard/': { page: '/dashboard' }
+			'/dashboard': { page: '/dashboard' }
+			// '/dashboard/': { page: '/dashboard' }
 		};
 	},
-	// withLess: () =>
-	// 	withLess({
-	// 		lessLoaderOptions: {
-	// 			javascriptEnabled: true
-	// 		}
-	// 	}),
+	// webpack: (config) => {
+	// 	config.module.rules.push({
+	// 		test: /\.s[ac]ss$/i,
+	// 		use: ['css-loader', 'sass-loader']
+	// 	});
+
+	// 	return config;
+	// },
 	reactStrictMode: true,
 	sassOptions: {
 		includePaths: [path.join(__dirname, 'styles')] // sass
@@ -32,7 +32,8 @@ const nextConfig = {
 	assetPrefix:
 		process.env.NODE_ENV === 'production'
 			? `https://dlwlsdn201.github.io/${repository}`
-			: '',
+			: 'http://localhost:3000',
+	distDir: 'out/_next',
 	trailingSlash: true,
 	async rewrites() {
 		return [

@@ -1,23 +1,20 @@
 {
   "presets": ["next/babel"],
   "plugins": [    
-  [
-      "module-resolver", {
-        "root": ["."],
-        "alias": {
-          "styles": "./styles"
-        },
-        "cwd": "babelrc"
-    }],
-    [
-      "wrap-in-js", {
-        "extensions": ["css$", "scss$"]
-      }
-    ],
-    ["@babel/plugin-proposal-optional-chaining"],
-    ["@babel/plugin-proposal-decorators", {
-      "legacy": true
-    }],
+  // [
+  //     "module-resolver", {
+  //       "root": ["."],
+  //       "alias": {
+  //         "styles": "./styles"
+  //       },
+  //       "cwd": "babelrc"
+  //   }],
+  //   [
+  //     "wrap-in-js", {
+  //       "extensions": ["css$", "scss$"]
+  //     }
+  //   ],
+    ["@babel/plugin-proposal-optional-chaining"]
     // ["import", {"libraryName":  "antd", "style": true}]
   ]
 }
