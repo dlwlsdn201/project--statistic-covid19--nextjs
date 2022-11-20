@@ -137,13 +137,26 @@ const Home = (props: IPageProps): JSX.Element => {
 				console.groupEnd();
 			}
 		},
-		[dispatch]
+		[
+			dashboardState?.confirmations,
+			dashboardState?.deaths,
+			dashboardState?.hospitalizations,
+			dashboardState?.searchDate,
+			dashboardState?.severeSymptoms,
+			dashboardState?.weekly?.confirmations,
+			dashboardState?.weekly?.deaths,
+			dashboardState?.weekly?.hospitalizations,
+			dashboardState?.weekly?.severeSymptoms,
+			dashboardState?.yesterday,
+			dispatch
+		]
 	);
 
 	useEffect(() => {
 		console.log('useEffect');
 		initData(props);
 	}, [initData, props]);
+
 	return (
 		<>
 			<Seo title='대시보드' />
