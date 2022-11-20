@@ -3,6 +3,7 @@ import { store } from '../store';
 import { Provider } from 'react-redux';
 import Layout from '../components/Layout';
 import React from 'react';
+import 'antd/dist/antd.css';
 import '../styles/index.scss';
 
 function MyApp({ Component, pageProps }: AppProps) {
