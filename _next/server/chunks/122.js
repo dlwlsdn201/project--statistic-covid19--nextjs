@@ -189,7 +189,7 @@ var _addPathPrefix = __webpack_require__(1751);
 
 var _normalizeTrailingSlash = __webpack_require__(4969);
 
-const basePath =  false || '';
+const basePath = "/project--statistic-covid19--nextjs" || 0;
 
 function addBasePath(path, required) {
   if (false) {}
@@ -275,7 +275,7 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports.getDomainLocale = getDomainLocale;
-const basePath = (/* unused pure expression or super */ null && ( false || ''));
+const basePath = (/* unused pure expression or super */ null && ("/project--statistic-covid19--nextjs" || 0));
 
 function getDomainLocale(path, locale, locales, domainLocales) {
   if (false) {} else {
@@ -306,7 +306,7 @@ exports.hasBasePath = hasBasePath;
 
 var _pathHasPrefix = __webpack_require__(4567);
 
-const basePath =  false || '';
+const basePath = "/project--statistic-covid19--nextjs" || 0;
 
 function hasBasePath(path) {
   return (0, _pathHasPrefix).pathHasPrefix(path, basePath);
@@ -816,7 +816,7 @@ exports.removeBasePath = removeBasePath;
 
 var _hasBasePath = __webpack_require__(8771);
 
-const basePath =  false || '';
+const basePath = "/project--statistic-covid19--nextjs" || 0;
 
 function removeBasePath(path) {
   if (false) {}
@@ -3402,7 +3402,7 @@ class Router {
 
     const autoExportDynamic = (0, _isDynamic).isDynamicRoute(pathname1) && self.__NEXT_DATA__.autoExport;
 
-    this.basePath =  false || '';
+    this.basePath = "/project--statistic-covid19--nextjs" || 0;
     this.sub = subscription;
     this.clc = null;
     this._wrapApp = wrapApp; // make sure to ignore extra popState in safari on navigating
