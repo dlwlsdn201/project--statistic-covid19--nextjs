@@ -13,7 +13,6 @@ import {
 	updateWeeklyData,
 	updateYesterdayData
 } from '../store/reducers/dashboard';
-import { IPageProps } from '../types/page';
 import {
 	READ_DOMESTIC_COVID_CONFIRMATIONS_OF_WEEKLY,
 	READ_DOMESTIC_COVID_DEATHS_OF_WEEKLY,
@@ -22,14 +21,14 @@ import {
 	// READ_DOMESTIC_COVID_STATUS_TODAY
 } from './api';
 
-const Home = (props: IPageProps): JSX.Element => {
+const Home = (): JSX.Element => {
 	const dispatch = useDispatch();
 	const dashboardState = useSelector(
 		(state: any) => state.dashboard,
 		shallowEqual
 	);
 
-	const initData = useCallback(
+	const updateData = useCallback(
 		(props: any) => {
 			const {
 				// covid_status_today,
@@ -38,7 +37,7 @@ const Home = (props: IPageProps): JSX.Element => {
 				covid_severe_symptoms_weekly,
 				covid_hospitalizations_weekly
 			} = props;
-			console.group('called initData()');
+			console.group('called updateData()');
 			// const statusData = covid_status_today[0]; // 국내 일일 확진자, 사망자, 중증 발생자, 신규 입원자 현황 데이터
 			const weeklyDeathsData = covid_deaths_weekly[0];
 			const weeklyConfirmationsData = covid_confirmations_weekly[0];
@@ -153,72 +152,74 @@ const Home = (props: IPageProps): JSX.Element => {
 	);
 
 	useEffect(() => {
-		console.log('useEffect');
-		initData(props);
-	}, [initData, props]);
+		console.log('Loaded Init Data');
+		// fetch covid statistic data
+		const initData = async () => {
+			let PAYLOAD_DEATHS_WEEKLY: Array<any>;
+			let PAYLOAD_CONFIRMATIONS_WEEKLY: Array<any>;
+			let PAYLOAD_SEVERE_SYMPTOMS_WEEKLY: Array<any>;
+			let PAYLOAD_HOSPITALIZATIONS_WEEKLY: Array<any>;
+			try {
+				const res = await axios
+					.all([
+						READ_DOMESTIC_COVID_DEATHS_OF_WEEKLY(), // 주간 국내 코로나 사망자 조회 API 호출
+						READ_DOMESTIC_COVID_CONFIRMATIONS_OF_WEEKLY(), // 주간 국내 코로나 신규 확진자 조회 API 호출
+						READ_DOMESTIC_COVID_SEVERE_SYMPTOMS_OF_WEEKLY(), // 주간 국내 코로나 위중증자 조회 API 호출
+						READ_DOMESTIC_COVID_HOSPITALIZATIONS_OF_WEEKLY() // 주간 국내 코로나 신규 입원자 조회 API 호출
+					])
+					.then(
+						axios.spread(
+							(
+								resDeaths,
+								resConfirmations,
+								resSevereSymptons,
+								resHospitalizations
+							) => {
+								// 공공데이터포털 REST API 에 에러 이슈가 있음 _ 09.24 ~ ing (해결될 떄까지 테스트 데이터 사용)
+								if (
+									resDeaths.status === 200 &&
+									resDeaths.data?.response?.result.length > 0 &&
+									resConfirmations.status === 200 &&
+									resConfirmations.data?.response?.result.length > 0 &&
+									resSevereSymptons.status === 200 &&
+									resSevereSymptons.data?.response?.result.length > 0 &&
+									resHospitalizations.status === 200 &&
+									resHospitalizations.data?.response?.result.length > 0
+								) {
+									PAYLOAD_DEATHS_WEEKLY = resDeaths?.data?.response?.result;
+									PAYLOAD_CONFIRMATIONS_WEEKLY =
+										resConfirmations?.data?.response?.result;
+									PAYLOAD_SEVERE_SYMPTOMS_WEEKLY =
+										resSevereSymptons?.data?.response?.result;
+									PAYLOAD_HOSPITALIZATIONS_WEEKLY =
+										resHospitalizations?.data?.response?.result;
+								}
+								return {
+									covid_deaths_weekly: PAYLOAD_DEATHS_WEEKLY ?? [],
+									covid_confirmations_weekly:
+										PAYLOAD_CONFIRMATIONS_WEEKLY ?? [],
+									covid_severe_symptoms_weekly:
+										PAYLOAD_SEVERE_SYMPTOMS_WEEKLY ?? [],
+									covid_hospitalizations_weekly:
+										PAYLOAD_HOSPITALIZATIONS_WEEKLY ?? []
+								};
+							}
+						)
+					);
+				updateData(res); // fetch data을 store에 업데이트
+			} catch (error) {
+				console.log('Occured Error =>', error);
+			}
+		};
+		initData();
+	}, []);
 
 	return (
 		<>
 			<Seo title='대시보드' />
-			{/* <div> 대시보드 페이지 </div> */}
 			<Dashboard />
 		</>
 	);
 };
 
 export default Home;
-
-// SSR 적용
-export async function getServerSideProps() {
-	let PAYLOAD_DEATHS_WEEKLY;
-	let PAYLOAD_CONFIRMATIONS_WEEKLY;
-	let PAYLOAD_SEVERE_SYMPTOMS_WEEKLY;
-	let PAYLOAD_HOSPITALIZATIONS_WEEKLY;
-	await axios
-		.all([
-			READ_DOMESTIC_COVID_DEATHS_OF_WEEKLY(), // 주간 국내 코로나 사망자 조회 API 호출
-			READ_DOMESTIC_COVID_CONFIRMATIONS_OF_WEEKLY(), // 주간 국내 코로나 신규 확진자 조회 API 호출
-			READ_DOMESTIC_COVID_SEVERE_SYMPTOMS_OF_WEEKLY(), // 주간 국내 코로나 위중증자 조회 API 호출
-			READ_DOMESTIC_COVID_HOSPITALIZATIONS_OF_WEEKLY() // 주간 국내 코로나 신규 입원자 조회 API 호출
-		])
-		.then(
-			axios.spread(
-				(
-					resDeaths,
-					resConfirmations,
-					resSevereSymptons,
-					resHospitalizations
-				) => {
-					// 공공데이터포털 REST API 에 에러 이슈가 있음 _ 09.24 ~ ing (해결될 떄까지 테스트 데이터 사용)
-					if (
-						resDeaths.status === 200 &&
-						resDeaths.data?.response?.result.length > 0 &&
-						resConfirmations.status === 200 &&
-						resConfirmations.data?.response?.result.length > 0 &&
-						resSevereSymptons.status === 200 &&
-						resSevereSymptons.data?.response?.result.length > 0 &&
-						resHospitalizations.status === 200 &&
-						resHospitalizations.data?.response?.result.length > 0
-					) {
-						PAYLOAD_DEATHS_WEEKLY = resDeaths?.data?.response?.result;
-						PAYLOAD_CONFIRMATIONS_WEEKLY =
-							resConfirmations?.data?.response?.result;
-						PAYLOAD_SEVERE_SYMPTOMS_WEEKLY =
-							resSevereSymptons?.data?.response?.result;
-						PAYLOAD_HOSPITALIZATIONS_WEEKLY =
-							resHospitalizations?.data?.response?.result;
-					}
-				}
-			)
-		)
-		.catch((reason) => console.log('Occured Error =>', reason));
-
-	return {
-		props: {
-			covid_deaths_weekly: PAYLOAD_DEATHS_WEEKLY ?? [],
-			covid_confirmations_weekly: PAYLOAD_CONFIRMATIONS_WEEKLY ?? [],
-			covid_severe_symptoms_weekly: PAYLOAD_SEVERE_SYMPTOMS_WEEKLY ?? [],
-			covid_hospitalizations_weekly: PAYLOAD_HOSPITALIZATIONS_WEEKLY ?? []
-		}
-	};
-}

@@ -14,43 +14,9 @@ import { ResponsiveContainer } from 'recharts';
 import ConfirmationOfWeeklyCharts from './ConfirmationOfWeeklyCharts';
 import DeathOfWeeklyCharts from './DeathOfWeeklyCharts';
 
-// avatar style
-const avatarSX = {
-	width: 36,
-	height: 36,
-	fontSize: '1rem'
-};
-
-// action style
-const actionSX = {
-	mt: 0.75,
-	ml: 1,
-	top: 'auto',
-	right: 'auto',
-	alignSelf: 'flex-start',
-	transform: 'none'
-};
-
-// sales report status
-const status = [
-	{
-		value: 'today',
-		label: 'Today'
-	},
-	{
-		value: 'month',
-		label: 'This Month'
-	},
-	{
-		value: 'year',
-		label: 'This Year'
-	}
-];
-
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
 const Dashboard = () => {
-	const [value, setValue] = useState('today');
 	const [slot, setSlot] = useState('week');
 	const dashboardState = useSelector((state) => state.dashboard, shallowEqual);
 	const {
