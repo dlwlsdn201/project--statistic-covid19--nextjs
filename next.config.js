@@ -22,9 +22,7 @@ const nextConfig = {
 	},
 	swcMinify: true,
 	basePath: isProd ? `/${repository}` : '',
-	assetPrefix: isProd
-		? `https://dlwlsdn201.github.io/${repository}/`
-		: 'http://localhost:3000',
+	assetPrefix: isProd ? `https://dlwlsdn201.github.io/${repository}/` : '',
 	// distDir: 'out/_next',
 	trailingSlash: true,
 	async rewrites() {
