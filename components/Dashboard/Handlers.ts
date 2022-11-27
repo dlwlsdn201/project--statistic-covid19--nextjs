@@ -1,3 +1,4 @@
+import CustomNotification from '@components/Modules/Notification';
 import axios from 'axios';
 import {
 	READ_DOMESTIC_COVID_CONFIRMATIONS_OF_WEEKLY,
@@ -121,12 +122,14 @@ export const getRefreshData = async () => {
 						covid_severe_symptoms_weekly: PAYLOAD_SEVERE_SYMPTOMS_WEEKLY ?? [],
 						covid_hospitalizations_weekly: PAYLOAD_HOSPITALIZATIONS_WEEKLY ?? []
 					};
+					CustomNotification({ result });
 				}
 			)
 		)
-		.catch((reason) => {
+		.catch((error) => {
 			// 에러 Message 알림 코드 위치
-			console.log('Occured Error =>', reason);
+			CustomNotification({ result: undefined, errorMsg: error?.code });
+			console.log('Occured Error =>', error);
 		});
 	return result;
 };
