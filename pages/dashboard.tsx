@@ -13,6 +13,7 @@ import {
 	updateWeeklyData,
 	updateYesterdayData
 } from '../store/reducers/dashboard';
+import CustomNotification from '../components/Modules/Notification';
 import {
 	READ_DOMESTIC_COVID_CONFIRMATIONS_OF_WEEKLY,
 	READ_DOMESTIC_COVID_DEATHS_OF_WEEKLY,
@@ -207,7 +208,9 @@ const Home = (): JSX.Element => {
 						)
 					);
 				updateData(res); // fetch data을 store에 업데이트
-			} catch (error) {
+				CustomNotification({ result: res });
+			} catch (error: any) {
+				CustomNotification({ result: undefined, errorMsg: error?.code });
 				console.log('Occured Error =>', error);
 			}
 		};
