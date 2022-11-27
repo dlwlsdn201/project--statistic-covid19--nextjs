@@ -176,6 +176,7 @@ const Home = (): JSX.Element => {
 								resSevereSymptons,
 								resHospitalizations
 							) => {
+								console.log('resConfirmations:', resConfirmations);
 								// 공공데이터포털 REST API 에 에러 이슈가 있음 _ 09.24 ~ ing (해결될 떄까지 테스트 데이터 사용)
 								if (
 									resDeaths.status === 200 &&
@@ -194,6 +195,29 @@ const Home = (): JSX.Element => {
 										resSevereSymptons?.data?.response?.result;
 									PAYLOAD_HOSPITALIZATIONS_WEEKLY =
 										resHospitalizations?.data?.response?.result;
+
+									CustomNotification({ result: res }); // 성공 메세지
+								} else if (
+									(resDeaths.status === 200 &&
+										!resDeaths.data?.response &&
+										typeof resDeaths.data === 'string') ||
+									(resConfirmations.status === 200 &&
+										!resConfirmations.data?.response &&
+										typeof resConfirmations.data === 'string') ||
+									(resSevereSymptons.status === 200 &&
+										!resSevereSymptons.data?.response &&
+										typeof resSevereSymptons.data === 'string') ||
+									(resHospitalizations.status === 200 &&
+										!resHospitalizations.data?.response &&
+										typeof resHospitalizations.data === 'string')
+								) {
+									// 일일 조회 횟수 초과 안내 메세지
+									CustomNotification({
+										result: undefined,
+										resultCode: 22,
+										errorMsg:
+											'일일 조회 가능한 횟수를 초과하였습니다. 내일 다시 조회해주세요.'
+									});
 								}
 								return {
 									covid_deaths_weekly: PAYLOAD_DEATHS_WEEKLY ?? [],
@@ -207,8 +231,8 @@ const Home = (): JSX.Element => {
 							}
 						)
 					);
+				console.log('result:', res);
 				updateData(res); // fetch data을 store에 업데이트
-				CustomNotification({ result: res });
 			} catch (error: any) {
 				CustomNotification({ result: undefined, errorMsg: error?.code });
 				console.log('Occured Error =>', error);
