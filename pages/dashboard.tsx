@@ -176,7 +176,6 @@ const Home = (): JSX.Element => {
 								resSevereSymptons,
 								resHospitalizations
 							) => {
-								console.log('resConfirmations:', resConfirmations);
 								// 공공데이터포털 REST API 에 에러 이슈가 있음 _ 09.24 ~ ing (해결될 떄까지 테스트 데이터 사용)
 								if (
 									resDeaths.status === 200 &&

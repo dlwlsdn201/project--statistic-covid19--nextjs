@@ -114,6 +114,34 @@ export const getRefreshData = async () => {
 							resHospitalizations?.data?.response?.result;
 
 						// API 정상 응답 Message 알림 코드 위치
+						const res = {
+							PAYLOAD_DEATHS_WEEKLY,
+							PAYLOAD_CONFIRMATIONS_WEEKLY,
+							PAYLOAD_SEVERE_SYMPTOMS_WEEKLY,
+							PAYLOAD_HOSPITALIZATIONS_WEEKLY
+						};
+						CustomNotification({ result: res }); // 성공 메세지
+					} else if (
+						(resDeaths.status === 200 &&
+							!resDeaths.data?.response &&
+							typeof resDeaths.data === 'string') ||
+						(resConfirmations.status === 200 &&
+							!resConfirmations.data?.response &&
+							typeof resConfirmations.data === 'string') ||
+						(resSevereSymptons.status === 200 &&
+							!resSevereSymptons.data?.response &&
+							typeof resSevereSymptons.data === 'string') ||
+						(resHospitalizations.status === 200 &&
+							!resHospitalizations.data?.response &&
+							typeof resHospitalizations.data === 'string')
+					) {
+						// 일일 조회 횟수 초과 안내 메세지
+						CustomNotification({
+							result: undefined,
+							resultCode: 22,
+							errorMsg:
+								'일일 조회 가능한 횟수를 초과하였습니다. 내일 다시 조회해주세요.'
+						});
 					}
 
 					result = {
@@ -122,7 +150,6 @@ export const getRefreshData = async () => {
 						covid_severe_symptoms_weekly: PAYLOAD_SEVERE_SYMPTOMS_WEEKLY ?? [],
 						covid_hospitalizations_weekly: PAYLOAD_HOSPITALIZATIONS_WEEKLY ?? []
 					};
-					CustomNotification({ result });
 				}
 			)
 		)
