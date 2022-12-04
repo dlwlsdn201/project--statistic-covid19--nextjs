@@ -32,27 +32,24 @@ const Home = (): JSX.Element => {
 	const updateData = useCallback(
 		(props: any) => {
 			const {
-				// covid_status_today,
 				covid_deaths_weekly,
 				covid_confirmations_weekly,
 				covid_severe_symptoms_weekly,
 				covid_hospitalizations_weekly
 			} = props;
-			console.group('called updateData()');
-			// const statusData = covid_status_today[0]; // 국내 일일 확진자, 사망자, 중증 발생자, 신규 입원자 현황 데이터
 			const weeklyDeathsData = covid_deaths_weekly[0];
 			const weeklyConfirmationsData = covid_confirmations_weekly[0];
 			const weeklySevereSymptomsData = covid_severe_symptoms_weekly[0];
 			const weeklyhospitalizationsData = covid_hospitalizations_weekly[0];
 
-			let updateData;
+			let nextData;
 			if (
 				weeklyDeathsData &&
 				weeklyConfirmationsData &&
 				weeklySevereSymptomsData &&
 				weeklyhospitalizationsData
 			) {
-				updateData = {
+				nextData = {
 					// store에 업데이트할 response data
 					searchDate: weeklyDeathsData?.mmddhh,
 					deaths: {
@@ -95,31 +92,31 @@ const Home = (): JSX.Element => {
 					}
 				};
 				dispatch(
-					updateSearchDate(updateData?.searchDate ?? dashboardState?.searchDate)
+					updateSearchDate(nextData?.searchDate ?? dashboardState?.searchDate)
 				);
 				dispatch(
 					updateSevereSymptoms({
 						severeSymptoms:
-							updateData.severeSymptoms ?? dashboardState?.severeSymptoms
+							nextData.severeSymptoms ?? dashboardState?.severeSymptoms
 					})
 				);
 				dispatch(
 					updateHospitalizations({
 						hospitalizations:
-							updateData.hospitalizations ?? dashboardState?.hospitalizations
+							nextData.hospitalizations ?? dashboardState?.hospitalizations
 					})
 				);
 				dispatch(
 					updateConfirmations({
 						confirmations:
-							updateData.confirmations ?? dashboardState?.confirmations
+							nextData.confirmations ?? dashboardState?.confirmations
 					})
 				);
 				dispatch(
-					updateDeaths({ deaths: updateData.deaths ?? dashboardState?.deaths })
+					updateDeaths({ deaths: nextData.deaths ?? dashboardState?.deaths })
 				);
 				dispatch(
-					updateYesterdayData(updateData.yesterday ?? dashboardState?.yesterday)
+					updateYesterdayData(nextData.yesterday ?? dashboardState?.yesterday)
 				);
 				dispatch(
 					updateWeeklyData({
@@ -134,7 +131,6 @@ const Home = (): JSX.Element => {
 							dashboardState?.weekly?.hospitalizations
 					})
 				);
-				console.groupEnd();
 			}
 		},
 		[
@@ -153,7 +149,6 @@ const Home = (): JSX.Element => {
 	);
 
 	useEffect(() => {
-		console.log('Loaded Init Data');
 		// fetch covid statistic data
 		const initData = async () => {
 			let PAYLOAD_DEATHS_WEEKLY: Array<any>;
@@ -194,8 +189,7 @@ const Home = (): JSX.Element => {
 										resSevereSymptons?.data?.response?.result;
 									PAYLOAD_HOSPITALIZATIONS_WEEKLY =
 										resHospitalizations?.data?.response?.result;
-
-									CustomNotification({ result: res }); // 성공 메세지
+									CustomNotification({ isData: true }); // 성공 메세지
 								} else if (
 									(resDeaths.status === 200 &&
 										!resDeaths.data?.response &&
@@ -212,7 +206,7 @@ const Home = (): JSX.Element => {
 								) {
 									// 일일 조회 횟수 초과 안내 메세지
 									CustomNotification({
-										result: undefined,
+										isData: false,
 										resultCode: 22,
 										errorMsg:
 											'일일 조회 가능한 횟수를 초과하였습니다. 내일 다시 조회해주세요.'
@@ -230,10 +224,9 @@ const Home = (): JSX.Element => {
 							}
 						)
 					);
-				console.log('result:', res);
 				updateData(res); // fetch data을 store에 업데이트
 			} catch (error: any) {
-				CustomNotification({ result: undefined, errorMsg: error?.code });
+				CustomNotification({ isData: false, errorMsg: error?.code });
 				console.log('Occured Error =>', error);
 			}
 		};

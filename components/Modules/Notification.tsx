@@ -3,19 +3,19 @@ import { notification } from 'antd';
 import React from 'react';
 
 type TArgs = {
-	result: object | undefined;
+	isData: boolean;
 	resultCode?: number;
 	errorMsg?: string;
 };
 
-const CustomNotification = ({ result, resultCode, errorMsg }: TArgs): void => {
+const CustomNotification = ({ isData, resultCode, errorMsg }: TArgs): void => {
 	let props = {
 		message: '데이터 호출을 성공하였습니다',
 		placement: 'topRight',
 		description: <span />,
 		icon: <SmileTwoTone style={{ fontSize: 32 }} />
 	};
-	if (!result) {
+	if (!isData) {
 		let description = (
 			<div>
 				<h4 style={{ marginBottom: '1.5em' }}>
