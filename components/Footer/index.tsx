@@ -2,6 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 import { FiExternalLink } from 'react-icons/fi';
 import { BsGithub, BsInstagram } from 'react-icons/bs';
+
 const Footer = () => {
 	return (
 		<div className='footer-container'>

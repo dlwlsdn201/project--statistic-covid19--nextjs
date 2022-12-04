@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 
 // material-ui
 import { Box, Button, Grid, Stack, Typography } from '@mui/material';
@@ -40,7 +40,7 @@ const Dashboard = () => {
 		return result;
 	};
 
-	// ----- Data objs -----
+	// ----- 전일 대비 증감율을 통계 데이터 유형별로 묶어놓은 객체. -----
 	const changeRate = {
 		deaths: calcRateOfDayToDay(deaths?.count, yesterday?.deaths?.count),
 		severeSymptoms: calcRateOfDayToDay(
