@@ -35,7 +35,12 @@ h5 {
 	}
 }
 
+.root-container {
+	height: 100%;
+}
+
 .inner-container {
+	height: 100%;
 	padding: 36px 24px;
 }
 
@@ -62,6 +67,9 @@ h5 {
 	padding: 12px 24px;
 	display: flex;
 	justify-content: space-between;
+	width: 100%;
+	// position: fixed;
+	// bottom: 0;
 }
 
 .block-left {
