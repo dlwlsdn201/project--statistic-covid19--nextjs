@@ -73,7 +73,6 @@ export const getChartData = (
 };
 
 export const getRefreshData = async () => {
-	console.group('called refreshData()');
 	let result = {};
 	await axios
 		.all([
@@ -114,13 +113,7 @@ export const getRefreshData = async () => {
 							resHospitalizations?.data?.response?.result;
 
 						// API 정상 응답 Message 알림 코드 위치
-						const res = {
-							PAYLOAD_DEATHS_WEEKLY,
-							PAYLOAD_CONFIRMATIONS_WEEKLY,
-							PAYLOAD_SEVERE_SYMPTOMS_WEEKLY,
-							PAYLOAD_HOSPITALIZATIONS_WEEKLY
-						};
-						CustomNotification({ result: res }); // 성공 메세지
+						CustomNotification({ isData: true }); // 성공 메세지
 					} else if (
 						(resDeaths.status === 200 &&
 							!resDeaths.data?.response &&
@@ -137,7 +130,7 @@ export const getRefreshData = async () => {
 					) {
 						// 일일 조회 횟수 초과 안내 메세지
 						CustomNotification({
-							result: undefined,
+							isData: false,
 							resultCode: 22,
 							errorMsg:
 								'일일 조회 가능한 횟수를 초과하였습니다. 내일 다시 조회해주세요.'
@@ -155,7 +148,7 @@ export const getRefreshData = async () => {
 		)
 		.catch((error) => {
 			// 에러 Message 알림 코드 위치
-			CustomNotification({ result: undefined, errorMsg: error?.code });
+			CustomNotification({ isData: false, errorMsg: error?.code });
 			console.log('Occured Error =>', error);
 		});
 	return result;
