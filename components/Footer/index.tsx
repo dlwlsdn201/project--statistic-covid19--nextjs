@@ -25,12 +25,12 @@ const Footer = () => {
 				<div className='footer-content icons-wrapper'>
 					<Link href='https://github.com/dlwlsdn201/'>
 						<a className='icon'>
-							<BsGithub />
+							<BsGithub size={'1.4em'} />
 						</a>
 					</Link>
 					<Link href='https://www.instagram.com/binary_wooo/'>
 						<a className='icon'>
-							<BsInstagram />
+							<BsInstagram size={'1.4em'} />
 						</a>
 					</Link>
 				</div>
