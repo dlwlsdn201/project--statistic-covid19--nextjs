@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import Refresh from '../Modules/Refresh';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import dashboard, {
+import {
 	loadingFetchData,
 	updateConfirmations,
 	updateDeaths,
@@ -131,10 +131,9 @@ const Header = () => {
 							dashboardState?.weekly?.hospitalizations
 					})
 				);
-				console.log('dispatch 완료');
 			}
 		} else {
-			console.log('invalid data');
+			return false;
 		}
 	};
 
