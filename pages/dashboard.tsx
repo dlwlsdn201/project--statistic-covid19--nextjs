@@ -234,7 +234,7 @@ const Home = (): JSX.Element => {
 
 	return (
 		<>
-			<Seo title='대시보드' />
+			<Seo title='국내 Covid-19 통계 현황 대시보드' />
 			<Dashboard />
 		</>
 	);
