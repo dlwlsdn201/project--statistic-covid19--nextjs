@@ -152,9 +152,17 @@ const Header = () => {
 
 	return (
 		<div className='header-container'>
-			<strong className='header-title'>국내 COVID19 현황 대시보드</strong>
-			<span className='lookup-time'>{`(${searchTime} 기준 조회)`}</span>
-			<Refresh spin={loading} size={'1.2em'} onClick={() => updateData()} />
+			<div className='text-contents'>
+				<strong className='header-title'>국내 COVID19 현황 대시보드</strong>
+				<span className='lookup-time'>{`(${searchTime} 기준 조회)`}</span>
+			</div>
+			<div className='icon-contents'>
+				<Refresh
+					spin={loading}
+					style={{ fontSize: '18px' }}
+					onClick={() => updateData()}
+				/>
+			</div>
 		</div>
 	);
 };
