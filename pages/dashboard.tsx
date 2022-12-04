@@ -5,6 +5,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import Dashboard from '../components/Dashboard';
 import Seo from '../components/Seo';
 import {
+	loadingFetchData,
 	updateConfirmations,
 	updateDeaths,
 	updateHospitalizations,
@@ -155,6 +156,7 @@ const Home = (): JSX.Element => {
 			let PAYLOAD_SEVERE_SYMPTOMS_WEEKLY: Array<any>;
 			let PAYLOAD_HOSPITALIZATIONS_WEEKLY: Array<any>;
 			try {
+				dispatch(loadingFetchData(true));
 				const res = await axios
 					.all([
 						READ_DOMESTIC_COVID_DEATHS_OF_WEEKLY(), // 주간 국내 코로나 사망자 조회 API 호출
@@ -224,7 +226,9 @@ const Home = (): JSX.Element => {
 						)
 					);
 				updateData(res); // fetch data을 store에 업데이트
+				dispatch(loadingFetchData(false));
 			} catch (error: any) {
+				dispatch(loadingFetchData(false));
 				CustomNotification({ isData: false, errorMsg: error?.code });
 				console.log('Occured Error =>', error);
 			}
