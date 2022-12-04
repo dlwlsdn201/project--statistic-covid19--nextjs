@@ -1,3 +1,4 @@
+import CustomNotification from '@components/Modules/Notification';
 import axios from 'axios';
 import {
 	READ_DOMESTIC_COVID_CONFIRMATIONS_OF_WEEKLY,
@@ -72,7 +73,6 @@ export const getChartData = (
 };
 
 export const getRefreshData = async () => {
-	console.group('called refreshData()');
 	let result = {};
 	await axios
 		.all([
@@ -113,6 +113,28 @@ export const getRefreshData = async () => {
 							resHospitalizations?.data?.response?.result;
 
 						// API 정상 응답 Message 알림 코드 위치
+						CustomNotification({ isData: true }); // 성공 메세지
+					} else if (
+						(resDeaths.status === 200 &&
+							!resDeaths.data?.response &&
+							typeof resDeaths.data === 'string') ||
+						(resConfirmations.status === 200 &&
+							!resConfirmations.data?.response &&
+							typeof resConfirmations.data === 'string') ||
+						(resSevereSymptons.status === 200 &&
+							!resSevereSymptons.data?.response &&
+							typeof resSevereSymptons.data === 'string') ||
+						(resHospitalizations.status === 200 &&
+							!resHospitalizations.data?.response &&
+							typeof resHospitalizations.data === 'string')
+					) {
+						// 일일 조회 횟수 초과 안내 메세지
+						CustomNotification({
+							isData: false,
+							resultCode: 22,
+							errorMsg:
+								'일일 조회 가능한 횟수를 초과하였습니다. 내일 다시 조회해주세요.'
+						});
 					}
 
 					result = {
@@ -124,9 +146,10 @@ export const getRefreshData = async () => {
 				}
 			)
 		)
-		.catch((reason) => {
+		.catch((error) => {
 			// 에러 Message 알림 코드 위치
-			console.log('Occured Error =>', reason);
+			CustomNotification({ isData: false, errorMsg: error?.code });
+			console.log('Occured Error =>', error);
 		});
 	return result;
 };
