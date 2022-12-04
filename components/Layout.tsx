@@ -18,7 +18,7 @@ const Layout: FC<TProp> = ({ children }) => {
 		shallowEqual
 	);
 	return (
-		<>
+		<div className='semantic-container'>
 			<Head>
 				{/* 페이지 제목/아이콘 */}
 				<meta
@@ -29,14 +29,14 @@ const Layout: FC<TProp> = ({ children }) => {
 			<Header />
 			<Spin
 				spinning={dashboardState.loading}
+				wrapperClassName='spinning-wrapper'
+				style={{ height: '100%' }}
 				tip='Data Loading...'
 				size='large'>
-				<div className='inner-container'>
-					<div>{children}</div>
-				</div>
+				<div className='inner-container'>{children}</div>
 			</Spin>
 			<Footer />
-		</>
+		</div>
 	);
 };
 
