@@ -1,7 +1,9 @@
 "use client";
 
-import { Map, MapMarker } from "react-kakao-maps-sdk";
+import { Map, MapMarker, ZoomControl } from "react-kakao-maps-sdk";
 import useKakaoLoader from "../hooks/useKakaoLoader";
+
+const centerLocationInDomestic = [35.760795638486, 127.98160897107];
 
 export const KakaoMap = () => {
   useKakaoLoader();
@@ -11,15 +13,18 @@ export const KakaoMap = () => {
       id='map'
       center={{
         // 지도의 중심좌표
-        lat: 33.450701,
-        lng: 126.570667,
+        lat: centerLocationInDomestic[0],
+        lng: centerLocationInDomestic[1],
       }}
       style={{
         // 지도의 크기
-        width: "50rem",
-        height: "350px",
+        width: "100%",
+        height: "100%",
       }}
-      level={3} // 지도의 확대 레벨
-    />
+      level={12} // 지도의 확대 레벨
+    >
+      {/* Controls */}
+      <ZoomControl position='TOPRIGHT' />
+    </Map>
   );
 };

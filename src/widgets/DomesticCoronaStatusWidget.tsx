@@ -4,7 +4,7 @@ import { KakaoMap } from "../entities/kakaomap/ui";
 
 export const DomesticCoronaStatusWidget = () => {
   return (
-    <div>
+    <div className='widget-container'>
       <KakaoMap />
     </div>
   );
