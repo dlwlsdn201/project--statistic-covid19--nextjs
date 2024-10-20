@@ -1,0 +1,1 @@
+export { DomesticCoronaStatusWidget } from "./DomesticCoronaStatusWidget";
