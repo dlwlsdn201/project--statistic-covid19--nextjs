@@ -15,7 +15,7 @@ export default function Document() {
         <Main />
         <NextScript />
         <Script
-          src='//dapi.kakao.com/v2/maps/sdk.js?appkey=c233db6778ce5c0c9d4604bf7e407ee5&autoload=false'
+          src='//dapi.kakao.com/v2/maps/sdk.js?appkey=c233db6778ce5c0c9d4604bf7e407ee5&libraries=services,clusterer,drawing&autoload=false'
           strategy='lazyOnload'
         ></Script>
       </body>
