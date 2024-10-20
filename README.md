@@ -4,6 +4,7 @@
 <p align="center">
    <img src="https://user-images.githubusercontent.com/53039583/204124046-c596df5d-ae5d-45b4-9f3b-fffc6e964ac9.png" width="860" height="480"/>
 </p>
+
 > ## 개발 환경
 - Next.JS 
 - react-redux
@@ -24,6 +25,7 @@
 <p align="center">
  <image src="https://user-images.githubusercontent.com/53039583/205479464-eb75145d-efc6-46e4-8112-600ac6b12757.png" width="640" height="380"/>
 </p>
+
 ### Data
 - 국내 코로나 발생현황 open API 연동(from.공공데이터포털) 
 - react-redux 상태 관리 방식을 이용
